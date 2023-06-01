@@ -189,3 +189,6 @@ async def shell_exec(code, treat=True):
         stdout = stdout.decode().strip()
 
     return stdout, process
+
+
+user.run()
