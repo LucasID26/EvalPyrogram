@@ -7,7 +7,7 @@ import traceback
 import io
 
 API_ID = os.environ['API_ID']
-API_HASH = os.environ['AI_HASH']
+API_HASH = os.environ['API_HASH']
 STRING = os.environ['STRING']
 
 user = Client('Ubot', 
