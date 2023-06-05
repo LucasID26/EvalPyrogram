@@ -1,10 +1,11 @@
-from pyrogram import filters,enums,Client
+from pyrogram import filters,enums,Client,idle
 import os
 import sys
 import subprocess
 import asyncio
 import traceback
 import io
+from urllib.parse import urlparse 
 
 API_ID = os.environ['API_ID']
 API_HASH = os.environ['API_HASH']
@@ -21,7 +22,11 @@ user = Client('Ubot',
         in_memory=True) 
 
  
-
+asisstant = Client('asisstant',
+        api_id=API_ID,
+        api_hash=API_HASH,
+        session_string=AS_STRING,
+        in_memory=True)
   
 
 
@@ -191,4 +196,35 @@ async def shell_exec(code, treat=True):
     return stdout, process
 
 
-user.run()
+
+@asisstant.on_message(filters.chat(-1001549051935)) 
+async def sharing(client,m): 
+    text = m.text or m.caption 
+    urls = [] 
+    words = text.split() 
+    for word in words: 
+        url_components = urlparse(word) 
+        if url_components.scheme and url_components.netloc: 
+          urls.append(word) 
+    jumlah = 0 
+    for url in urls: 
+        if urlparse(url).path in ['/ADITXROBOT','/SATUNUSAOFFICIAL_BOT']: 
+            split_url = urlparse(url).query.split("=")[1] 
+            query = f"/start {split_url}" 
+            bot = str(urlparse(url).path.replace('/','')) 
+            await asisstant.send_message(bot,query) 
+            await asyncio.sleep(5) 
+            async for message in asisstant.get_chat_history(bot,limit=1): 
+            if message.video: 
+                id = message.video.file_id 
+                await asisstant.send_video("@aslibukansuci",video=id) 
+                jumlah += 1 
+    if jumlah >= 1: 
+        await asisstant.send_message(1928677026,f'**Berhasil mengirim {jumlah} video ke Channel** @aslibukansuci')
+
+
+asisstant.start()
+user.start()
+idle()
+asisstant.stop()
+user.stop()
