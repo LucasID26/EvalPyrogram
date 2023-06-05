@@ -10,6 +10,7 @@ from urllib.parse import urlparse
 API_ID = os.environ['API_ID']
 API_HASH = os.environ['API_HASH']
 STRING = os.environ['STRING']
+AS_STRING = os.environ['AS_STRING']
 
 user = Client('Ubot', 
 
